@@ -1,8 +1,8 @@
 # Financial-SQL-Project-Technical-Analysis-and-Signal-Generation
 
-This project consists of SQL scripts, primarily using Recursive Common Table Expressions (CTEs) and UPDATE commands on the Data table, designed to perform advanced technical analysis and generate complex buying and selling signals for financial assets, often filtered for several stocks.
+This project consists of the creation of a database, whose data is obtained from an API. The SQL scripts, primarily using Recursive Common Table Expressions (CTEs) and UPDATE commands on the Data table, designed to perform advanced technical analysis and generate complex buying and selling signals for financial assets, often filtered for several stocks.
 
----
+----
 
 ## PHASE 1: Indicator Initialization and Simple Comparisons
 
