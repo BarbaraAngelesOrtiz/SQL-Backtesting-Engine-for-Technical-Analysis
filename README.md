@@ -38,6 +38,7 @@ Esta fase utiliza las rachas sostenidas calculadas anteriormente para definir la
 1. **Clasificación E3:** Categoriza el estado del mercado mediante la definición de seis jerarquías distintas: EMA_10, EMA_20 y EMA_40 (Escenarios 1 a 6); de lo contrario, el valor se establece en 0.
 
 2. **Señales Compuestas (F1, F5, F6):** Combinan múltiples contadores de rachas:
+   
 ◦ F1_1, F1_2: Utilizan umbrales en las rachas cruzadas de la EMA (p. ej., E1_3 >= 20 o E1_1 = 1 o 2) para determinar la señal.
 
 ◦ F5_1, F5_2: Definen condiciones extremas, que suelen activar una señal (1) cuando las rachas bajistas son muy largas (p. ej., E1_3 <= -80 o combinaciones de rachas negativas en E1_4 y E2_4).
