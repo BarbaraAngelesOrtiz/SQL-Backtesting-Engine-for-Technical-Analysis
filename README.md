@@ -1,10 +1,10 @@
-# Financial-SQL-Project-Technical-Analysis-and-Signal-Generation
+# 💡Financial SQL Project Technical Analysis and Signal Generation
 
 This project consists of the creation of a database, whose data is obtained from an API. The SQL scripts, primarily using Recursive Common Table Expressions (CTEs) and UPDATE commands on the Data table, designed to perform advanced technical analysis and generate complex buying and selling signals for financial assets, often filtered for several stocks.
 
 ----
 
-## PHASE 1: Indicator Initialization and Simple Comparisons
+## 📝PHASE 1: Indicator Initialization and Simple Comparisons
 
 The initial phase focuses on establishing foundational binary indicators (R, E, H) by comparing current values to fixed thresholds or immediate prior values.
 
@@ -18,7 +18,7 @@ The initial phase focuses on establishing foundational binary indicators (R, E, 
 
 ----
 
-## PHASE 2: Calculation of Sustained Streaks (Recursive CTEs)
+## 📊PHASE 2: Calculation of Sustained Streaks (Recursive CTEs)
 This phase uses Recursive CTEs with high recursion limits (OPTION (MAXRECURSION 10000)),,,,,,, to calculate the duration (streak count) of specific relationships. Positive counts denote bullish streaks (EMA A > EMA B) and negative counts denote bearish streaks (EMA A < EMA B).
 
 | Counter (Column)            | Condition Tracked                                                                                                                          |
@@ -31,7 +31,7 @@ This phase uses Recursive CTEs with high recursion limits (OPTION (MAXRECURSION 
 
 ----
 
-## PHASE 3: Complex Market States and Compound Signals (F & E3)
+## 📈PHASE 3: Complex Market States and Compound Signals (F & E3)
 
 This phase uses the sustained streaks calculated above to define market conditions and generate trigger signals.
 
@@ -44,7 +44,7 @@ This phase uses the sustained streaks calculated above to define market conditio
 
 ----
    
-## PHASE 4: Transaction Logic and Performance Tracking
+## ⏱️PHASE 4: Transaction Logic and Performance Tracking
 
 **Transaction Signals**
 
