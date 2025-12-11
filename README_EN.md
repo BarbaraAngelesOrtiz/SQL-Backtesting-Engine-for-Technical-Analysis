@@ -69,3 +69,60 @@ Explicit buy and sell signals are defined on the Datos table:
     ◦ ROI is calculated at the time of a sale (V1 or V2 = 1) by comparing the Precio_Venta (Adj_Close) with the Precio_Compra (the Adj_Close of the preceding purchase, retrieved using LAG).
    
     ◦ Profit or Loss (resultado) is determined by checking if the difference (diferencia) between the sale price and the corresponding purchase price is positive ('Ganancia') or zero/negative ('Perdida').
+
+----
+## 📌 Summary
+
+This project is a robust and innovative SQL-based backtesting engine. Its foundation is strong, and with a few optimizations it can scale efficiently while remaining clean and extensible.
+
+## 🚀 Key Takeaways
+
+1. Advanced SQL for Time-Series Analysis
+
+The project makes impressive use of recursive CTEs and sequential logic to compute streaks, momentum, and multi-layer indicators. Components like Counter, EMA acceleration (E1_x), and RSI streaks (R21) highlight deep mastery of SQL’s analytical capabilities.
+
+2. Well-Designed and Sophisticated Signals
+
+Signals such as F1, F5, and F6 incorporate duration, momentum, trend fatigue, and historical context—far beyond simple moving-average crossovers. This leads to more realistic and nuanced backtesting.
+
+3. Realistic Backtesting Engine
+
+The handling of average entry price, position resets, buy/sell flags, and ROI calculation reflects a system designed to mimic real trading conditions with precision.
+
+----
+
+## 🔧 Future Improvements
+1. Optimize Recursive CTEs
+
+Recursive CTEs are powerful but expensive. Consider evaluating:
+
+- CLR-based user-defined functions (UDFs)
+
+- Efficient procedural logic (when supported)
+
+- Temporary table optimizations
+
+2. Consolidate Multiple UPDATE Statements
+
+Many simple indicators can be calculated in a single statement or CTE. Consolidation will improve performance and maintainability.
+
+3. Prefer Window Functions (LAG / LEAD)
+
+Standardizing sequential logic with window functions can simplify code and significantly improve performance.
+
+4. Strengthen Numeric Precision
+
+Ensure all EMA and historical indicator columns use appropriate DECIMAL/NUMERIC precision, reducing the need for repeated rounding inside CTEs.
+
+----
+
+## Author
+**Bárbara Ángeles Ortiz**
+
+<img src="https://github.com/user-attachments/assets/30ea0d40-a7a9-4b19-a835-c474b5cc50fb" width="115">
+
+[LinkedIn](https://www.linkedin.com/in/barbaraangelesortiz/) | [GitHub](https://github.com/BarbaraAngelesOrtiz)
+
+![Status](https://img.shields.io/badge/status-finished-brightgreen) 📅 December 2025
+
+![SQL Server](https://img.shields.io/badge/Sql-Server-orange)
