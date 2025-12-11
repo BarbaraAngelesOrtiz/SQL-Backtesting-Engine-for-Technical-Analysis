@@ -117,3 +117,11 @@ Asegúrese de que todas las columnas de EMA e indicadores históricos utilicen l
 ----
 
 ## Autor
+
+<img src="https://github.com/user-attachments/assets/30ea0d40-a7a9-4b19-a835-c474b5cc50fb" width="115">
+
+[LinkedIn](https://www.linkedin.com/in/barbaraangelesortiz/) | [GitHub](https://github.com/BarbaraAngelesOrtiz)
+
+![Status](https://img.shields.io/badge/status-finished-brightgreen) 📅 Diciembre 2025
+
+![SQL Server](https://img.shields.io/badge/Sql-Server-orange)
