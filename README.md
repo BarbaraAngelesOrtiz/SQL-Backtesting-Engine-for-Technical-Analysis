@@ -69,3 +69,51 @@ Las señales explícitas de compra y venta se definen en la tabla Datos:
 ◦ El ROI se calcula al momento de una venta (V1 o V2 ​​= 1) comparando el Precio de Venta (Ajuste de Cierre) con el Precio de Compra (el Ajusto de Cierre de la compra anterior, obtenido mediante LAG).
 
 ◦ El Resultado se determina comprobando si la diferencia entre el precio de venta y el precio de compra correspondiente es positiva ('Ganancia') o cero/negativa ('Perdida').
+
+----
+## 📌 Resumen
+
+Este proyecto es un motor de backtesting robusto e innovador basado en SQL. Su base es sólida y, con algunas optimizaciones, puede escalar eficientemente, manteniéndose limpio y extensible.
+
+## 🚀 Conclusiones clave
+
+1. SQL avanzado para análisis de series temporales
+
+El proyecto hace un uso excepcional de CTE recursivas y lógica secuencial para calcular rachas, momentum e indicadores multicapa. Componentes como Counter, aceleración de EMA (E1_x) y rachas RSI (R21) demuestran un profundo dominio de las capacidades analíticas de SQL.
+
+2. Señales sofisticadas y bien diseñadas
+
+Señales como F1, F5 y F6 incorporan duración, momentum, fatiga de tendencia y contexto histórico, mucho más allá de los simples cruces de medias móviles. Esto permite realizar backtesting más realistas y con más matices.
+
+3. Motor de Backtesting Realista
+
+El manejo del precio promedio de entrada, los reinicios de posiciones, los indicadores de compra/venta y el cálculo del ROI reflejan un sistema diseñado para imitar las condiciones reales de trading con precisión.
+
+----
+
+## 🔧 Mejoras Futuras
+1. Optimizar las CTE recursivas
+
+Las CTE recursivas son potentes, pero costosas. Considere evaluar:
+
+- Funciones definidas por el usuario (UDF) basadas en CLR
+
+- Lógica procedimental eficiente (cuando sea compatible)
+
+- Optimizaciones de tablas temporales
+
+2. Consolidar múltiples sentencias UPDATE
+
+Muchos indicadores simples se pueden calcular en una sola sentencia o CTE. La consolidación mejorará el rendimiento y la facilidad de mantenimiento.
+
+3. Preferir Funciones de Ventana (LAG/LEAD)
+
+Estandarizar la lógica secuencial con funciones de ventana puede simplificar el código y mejorar significativamente el rendimiento.
+
+4. Reforzar la Precisión Numérica
+
+Asegúrese de que todas las columnas de EMA e indicadores históricos utilicen la precisión DECIMAL/NUMÉRICA adecuada, reduciendo la necesidad de redondeos repetidos dentro de las CTE.
+
+----
+
+## Autor
