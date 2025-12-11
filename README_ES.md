@@ -38,7 +38,9 @@ Esta fase utiliza las rachas sostenidas calculadas anteriormente para definir la
 1. **Clasificación E3:** Categoriza el estado del mercado mediante la definición de seis jerarquías distintas: EMA_10, EMA_20 y EMA_40 (Escenarios 1 a 6); de lo contrario, el valor se establece en 0.
 
 2. **Señales Compuestas (F1, F5, F6):** Combinan múltiples contadores de rachas:
-◦ F1_1, F1_2: Utilizan umbrales en las rachas cruzadas de la EMA (p. ej., E1_3 >= 20 o E1_1 = 1 o 2) para determinar la señal. ◦ F5_1, F5_2: Definen condiciones extremas, que suelen activar una señal (1) cuando las rachas bajistas son muy largas (p. ej., E1_3 <= -80 o combinaciones de rachas negativas en E1_4 y E2_4).
+◦ F1_1, F1_2: Utilizan umbrales en las rachas cruzadas de la EMA (p. ej., E1_3 >= 20 o E1_1 = 1 o 2) para determinar la señal.
+
+◦ F5_1, F5_2: Definen condiciones extremas, que suelen activar una señal (1) cuando las rachas bajistas son muy largas (p. ej., E1_3 <= -80 o combinaciones de rachas negativas en E1_4 y E2_4).
 
 ◦ F6_x: Utilizan combinaciones de rachas de EMA (E1_4, E2_2) y rachas de velocidad (H2_2).
 
@@ -63,5 +65,7 @@ Las señales explícitas de compra y venta se definen en la tabla Datos:
 2. **Precio Promedio de Compra (PROM):** Las funciones de ventana se utilizan para calcular la suma acumulada de los precios de compra (SUMA) y el recuento acumulado de compras (CONT). Esta acumulación se reinicia cada vez que se produce una venta (Venta_Flag basado en V1, V2, V3). El precio promedio (PROM) se calcula como SUMA / CONT.
 
 3. **Retorno de la Inversión (ROI) y P&L:**
+   
 ◦ El ROI se calcula al momento de una venta (V1 o V2 ​​= 1) comparando el Precio de Venta (Ajuste de Cierre) con el Precio de Compra (el Ajusto de Cierre de la compra anterior, obtenido mediante LAG).
+
 ◦ El Resultado se determina comprobando si la diferencia entre el precio de venta y el precio de compra correspondiente es positiva ('Ganancia') o cero/negativa ('Perdida').
