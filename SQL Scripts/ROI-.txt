@@ -1,0 +1,31 @@
+WITH Compras_Ventas AS (
+    SELECT 
+        Empresa,
+        Fecha,
+        Adj_Close,
+        V1,
+		V2,
+        LAG(Adj_Close) OVER (PARTITION BY Empresa ORDER BY Fecha) AS Prev_Adj_Close -- Precio de la compra anterior
+    FROM 
+        [Michi].[dbo].[Datos2] -- Reemplaza con el nombre de tu tabla
+    WHERE 
+         V1 = 1  OR  V2 = 1 
+)
+
+SELECT 
+    Empresa,
+    Fecha,
+        V1,
+		V2,
+    Adj_Close AS Precio_Venta,
+    Prev_Adj_Close AS Precio_Compra,
+    CASE 
+        WHEN (V1 = 1 OR V2 = 1) AND Prev_Adj_Close IS NOT NULL THEN 
+            ((Adj_Close - Prev_Adj_Close) / Prev_Adj_Close) * 100  -- Fórmula del ROI en porcentaje
+        ELSE 
+            NULL
+    END AS ROI
+FROM 
+    Compras_Ventas
+WHERE 
+    V1 = 1  OR  V2 = 1  ;  -- Solo calculamos ROI en las ventas

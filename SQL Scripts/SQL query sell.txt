@@ -1,0 +1,19 @@
+UPDATE t1
+SET venta1 = CASE
+    WHEN t1.RSI > 70
+    AND t1.Adj_Close < t1.EMA_10
+    THEN 1
+    ELSE 0
+END
+FROM Datos t1;
+
+UPDATE t1
+SET venta2 = CASE
+    WHEN t1.RSI > 70
+    AND t1.Adj_Close < t1.EMA_20
+    THEN 1
+    ELSE 0
+END
+FROM Datos t1;
+
+select * from Datos where Datos.venta1=1 OR Datos.venta2=1  ;

@@ -1,0 +1,52 @@
+-- A-Mostrar todos los campos junto con el promedio de los precios de compra si se repite fecha_venta
+SELECT fecha_compra, 
+       fecha_venta, 
+       empresa, 
+       precio_compra, 
+       precio_venta, 
+       resultado, 
+       diferencia,
+       -- Calcular el promedio de precio_compra por fecha_venta
+       AVG(precio_compra) OVER (PARTITION BY fecha_venta) AS promedio_precio_compra
+FROM tu_tabla
+ORDER BY fecha_venta;
+
+-- B- Actualizar precio_compra con el promedio de precios por fecha_venta
+WITH PromedioPrecios AS (
+    -- Calcular el promedio de los precios de compra por fecha_venta
+    SELECT fecha_venta, 
+           AVG(precio_compra) AS promedio_precio_compra
+    FROM tu_tabla
+    GROUP BY fecha_venta
+)
+
+Explicación:
+CTE (PromedioPrecios):
+
+Se crea una CTE que calcula el promedio de los precios de compra agrupados por fecha_venta.
+UPDATE:
+
+Se actualiza el valor de precio_compra en la tabla original usando el promedio calculado en la CTE.
+La actualización solo reemplaza el precio_compra por el promedio cuando las filas tienen la misma fecha_venta.
+JOIN:
+
+El JOIN asegura que actualizamos el valor de precio_compra solo para las filas con la misma fecha_venta.
+
+3. Mostrar el resultado actualizado
+
+--C-  Actualizar los valores de precio_compra
+UPDATE t
+SET t.precio_compra = p.promedio_precio_compra
+FROM tu_tabla t
+JOIN PromedioPrecios p ON t.fecha_venta = p.fecha_venta;
+
+-- Mostrar todos los campos después de actualizar precio_compra
+SELECT fecha_compra, 
+       fecha_venta, 
+       empresa, 
+       precio_compra, 
+       precio_venta, 
+       resultado, 
+       diferencia
+FROM tu_tabla
+ORDER BY fecha_venta;

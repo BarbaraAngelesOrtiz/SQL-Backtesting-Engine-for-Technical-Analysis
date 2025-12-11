@@ -1,0 +1,156 @@
+USE Michi;
+WITH CTE_Counter AS (
+    -- Primer registro (inicialización)
+    SELECT 
+        Fecha,
+        HIST_1,
+     
+        CASE 
+            WHEN ROUND(HIST_1, 15) > 0 THEN 1
+            WHEN ROUND(HIST_1, 15) < 0 THEN -1
+            ELSE 0
+        END AS Counter
+    FROM Datos2
+    WHERE Fecha = (SELECT MIN(Fecha) FROM Datos2)
+
+    UNION ALL
+
+    -- Registros posteriores
+    SELECT 
+        D.Fecha,
+        D.HIST_1,
+       
+        CASE 
+            WHEN ROUND(D.HIST_1, 15) > 0 THEN
+                CASE 
+                    WHEN C.Counter > 0 THEN C.Counter + 1 -- Incrementa si el anterior es positivo
+                    ELSE 1 -- Reinicia si el anterior es negativo o cero
+                END
+            WHEN ROUND(D.HIST_1, 15) < 0 THEN
+                CASE 
+                    WHEN C.Counter < 0 THEN C.Counter - 1 -- Decrementa si el anterior es negativo
+                    ELSE -1 -- Reinicia si el anterior es positivo o cero
+                END
+            ELSE C.Counter -- Si son iguales, mantiene el valor anterior
+        END AS Counter
+    FROM Datos2 D
+    INNER JOIN CTE_Counter C ON D.Fecha > C.Fecha 
+        AND NOT EXISTS (
+            SELECT 1 
+            FROM Datos2 D2 
+            WHERE D2.Fecha > C.Fecha AND D2.Fecha < D.Fecha
+        )
+)
+-- Actualizar la columna R21 con los resultados de Counter
+UPDATE D
+SET D.H1_1 = C.Counter
+FROM Datos2 D
+INNER JOIN CTE_Counter C
+ON D.Fecha = C.Fecha
+OPTION (MAXRECURSION 10000); -- Aumentar el límite de recursion
+
+---------------------
+
+USE Michi;
+WITH CTE_Counter AS (
+    -- Primer registro (inicialización)
+    SELECT 
+        Fecha,
+        HIST_3,
+     
+        CASE 
+            WHEN ROUND(HIST_3, 15) > 0 THEN 1
+            WHEN ROUND(HIST_3, 15) < 0 THEN -1
+            ELSE 0
+        END AS Counter
+    FROM Datos2
+    WHERE Fecha = (SELECT MIN(Fecha) FROM Datos2)
+
+    UNION ALL
+
+    -- Registros posteriores
+    SELECT 
+        D.Fecha,
+        D.HIST_3,
+       
+        CASE 
+            WHEN ROUND(D.HIST_3, 15) > 0 THEN
+                CASE 
+                    WHEN C.Counter > 0 THEN C.Counter + 1 -- Incrementa si el anterior es positivo
+                    ELSE 1 -- Reinicia si el anterior es negativo o cero
+                END
+            WHEN ROUND(D.HIST_3, 15) < 0 THEN
+                CASE 
+                    WHEN C.Counter < 0 THEN C.Counter - 1 -- Decrementa si el anterior es negativo
+                    ELSE -1 -- Reinicia si el anterior es positivo o cero
+                END
+            ELSE C.Counter -- Si son iguales, mantiene el valor anterior
+        END AS Counter
+    FROM Datos2 D
+    INNER JOIN CTE_Counter C ON D.Fecha > C.Fecha 
+        AND NOT EXISTS (
+            SELECT 1 
+            FROM Datos2 D2 
+            WHERE D2.Fecha > C.Fecha AND D2.Fecha < D.Fecha
+        )
+)
+-- Actualizar la columna R21 con los resultados de Counter
+UPDATE D
+SET D.H1_3 = C.Counter
+FROM Datos2 D
+INNER JOIN CTE_Counter C
+ON D.Fecha = C.Fecha
+OPTION (MAXRECURSION 10000); -- Aumentar el límite de recursion
+
+--------------------------------------------------
+
+USE Michi;
+WITH CTE_Counter AS (
+    -- Primer registro (inicialización)
+    SELECT 
+        Fecha,
+        HIST_2,
+     
+        CASE 
+            WHEN ROUND(HIST_2, 15) > 0 THEN 1
+            WHEN ROUND(HIST_2, 15) < 0 THEN -1
+            ELSE 0
+        END AS Counter
+    FROM Datos2
+    WHERE Fecha = (SELECT MIN(Fecha) FROM Datos2)
+
+    UNION ALL
+
+    -- Registros posteriores
+    SELECT 
+        D.Fecha,
+        D.HIST_2,
+       
+        CASE 
+            WHEN ROUND(D.HIST_2, 15) > 0 THEN
+                CASE 
+                    WHEN C.Counter > 0 THEN C.Counter + 1 -- Incrementa si el anterior es positivo
+                    ELSE 1 -- Reinicia si el anterior es negativo o cero
+                END
+            WHEN ROUND(D.HIST_2, 15) < 0 THEN
+                CASE 
+                    WHEN C.Counter < 0 THEN C.Counter - 1 -- Decrementa si el anterior es negativo
+                    ELSE -1 -- Reinicia si el anterior es positivo o cero
+                END
+            ELSE C.Counter -- Si son iguales, mantiene el valor anterior
+        END AS Counter
+    FROM Datos2 D
+    INNER JOIN CTE_Counter C ON D.Fecha > C.Fecha 
+        AND NOT EXISTS (
+            SELECT 1 
+            FROM Datos2 D2 
+            WHERE D2.Fecha > C.Fecha AND D2.Fecha < D.Fecha
+        )
+)
+-- Actualizar la columna R21 con los resultados de Counter
+UPDATE D
+SET D.H1_2 = C.Counter
+FROM Datos2 D
+INNER JOIN CTE_Counter C
+ON D.Fecha = C.Fecha
+OPTION (MAXRECURSION 10000); -- Aumentar el límite de recursion

@@ -1,0 +1,28 @@
+USE Michi;
+
+-- CTE para calcular V1 y su anterior
+WITH CTE_V1 AS (
+    SELECT 
+        Empresa,
+        Fecha,
+        EMA_10,
+		EMA_20,
+		EMA_40,
+        LAG(EMA_10, 1) OVER (PARTITION BY Empresa ORDER BY Fecha) AS Prev_EMA_10,
+		LAG(EMA_20, 1) OVER (PARTITION BY Empresa ORDER BY Fecha) AS Prev_EMA_20
+		FROM 
+        Datos2
+)
+-- Actualización de la columna V1
+UPDATE D
+SET D.V1 = CASE 
+
+               WHEN C.EMA_20> C.EMA_40 AND C.EMA_10<= C.EMA_20 AND C.Prev_EMA_10 > C.Prev_EMA_20 THEN 1  -- Condición cumplida
+               ELSE 0  -- No se cumple la condición
+            END 
+FROM [Michi].[dbo].[Datos2] D
+
+INNER JOIN CTE_V1 C
+    ON D.Empresa = C.Empresa
+    AND D.Fecha = C.Fecha
+WHERE D.Empresa = 'RIO'  -- Filtra por la empresa deseada si es necesario

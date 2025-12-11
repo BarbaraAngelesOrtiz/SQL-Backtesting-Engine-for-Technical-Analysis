@@ -1,0 +1,48 @@
+WITH CompraVenta AS (
+    SELECT 
+        Empresa,
+        Fecha,
+        Adj_Close,
+        HM1, HM2, HM3,
+        V1, V2, V3,
+        CASE WHEN HM1 = 1 OR HM2 = 1 OR HM3 = 1 THEN Adj_Close ELSE 0 END AS Suma_Compra,
+        CASE WHEN HM1 = 1 OR HM2 = 1 OR HM3 = 1 THEN 1 ELSE 0 END AS Contador_Compra,
+        CASE WHEN V1 = 1 OR V2 = 1 OR V3 = 1 THEN 1 ELSE 0 END AS Venta_Flag
+    FROM 
+        [Michi].[dbo].[Datos]
+    WHERE 
+        Empresa = 'RIO'
+)
+, MarcadoVentas AS (
+    SELECT *,
+        SUM(Venta_Flag) OVER (PARTITION BY Empresa ORDER BY Fecha ROWS UNBOUNDED PRECEDING) AS GrupoVenta -- Agrupar por ventas
+    FROM CompraVenta
+)
+, Acumulados AS (
+    SELECT 
+        Empresa,
+        Fecha,
+        Adj_Close,
+        HM1, HM2, HM3,
+        V1, V2, V3,
+        SUM(Suma_Compra) OVER (PARTITION BY Empresa, GrupoVenta ORDER BY Fecha ROWS UNBOUNDED PRECEDING) AS SUMA, -- Suma reiniciada por cada venta
+        SUM(Contador_Compra) OVER (PARTITION BY Empresa, GrupoVenta ORDER BY Fecha ROWS UNBOUNDED PRECEDING) AS CONT -- Contador reiniciado por cada venta
+    FROM MarcadoVentas
+)
+SELECT 
+    Empresa,
+    Fecha,
+    Adj_Close,
+    SUMA,
+    CONT,
+	V1,
+	V2,
+	V3,
+	HM1,
+	HM2,
+	HM3,
+    CASE WHEN CONT > 0 THEN SUMA / CONT ELSE NULL END AS PROM -- Calcular promedio solo si CONT > 0
+FROM 
+    Acumulados
+ORDER BY 
+    Fecha;

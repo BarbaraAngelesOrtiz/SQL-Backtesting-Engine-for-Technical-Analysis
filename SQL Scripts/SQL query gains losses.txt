@@ -1,0 +1,40 @@
+-- Crear una tabla temporal para almacenar las compras y ventas
+WITH Compras AS (
+    SELECT t1.fecha AS fecha_compra, t1.empresa, t1.Adj_Close AS precio_compra
+    FROM Datos t1
+    WHERE t1.compra1 = 1 OR t1.compra2 = 1 OR t1.compra3 = 1
+),
+Ventas AS (
+    SELECT t2.fecha AS fecha_venta, t2.empresa, t2.Adj_Close AS precio_venta
+    FROM Datos t2
+    WHERE t2.venta1 = 1 OR t2.venta2 = 1
+)
+-- Calcular ganancia o pérdida
+SELECT c.fecha_compra, v.fecha_venta, c.empresa,
+ 	c.precio_compra,  -- Mostrar precio de compra
+	v.precio_venta,   -- Mostrar precio de venta
+       CASE 
+           WHEN (v.precio_venta - c.precio_compra) > 0 THEN 'Ganancia'
+           ELSE 'Perdida'
+       END AS resultado,
+       (v.precio_venta - c.precio_compra) AS diferencia
+FROM Compras c
+JOIN Ventas v ON c.empresa = v.empresa AND v.fecha_venta > c.fecha_compra;
+
+o 
+
+-- Crear una tabla temporal para almacenar los resultados de ganancias o pérdidas
+SELECT c.fecha_compra, v.fecha_venta, c.empresa,
+       CASE 
+           WHEN (v.precio_venta - c.precio_compra) > 0 THEN 'Ganancia'
+           ELSE 'Perdida'
+       END AS resultado,
+       (v.precio_venta - c.precio_compra) AS diferencia
+INTO #GananciasPerdidas
+FROM (SELECT t1.fecha AS fecha_compra, t1.empresa, t1.Adj_Close AS precio_compra
+      FROM tu_tabla t1
+      WHERE t1.compra1 = 1 OR t1.compra2 = 1 OR t1.compra3 = 1) c
+JOIN (SELECT t2.fecha AS fecha_venta, t2.empresa, t2.Adj_Close AS precio_venta
+      FROM tu_tabla t2
+      WHERE t2.ventas1 = 1 OR t2.ventas2 = 1) v
+ON c.empresa = v.empresa AND v.fecha_venta > c.fecha_compra;

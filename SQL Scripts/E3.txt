@@ -1,0 +1,34 @@
+
+UPDATE t
+SET E3 = CASE
+    WHEN t.EMA_10 > t.EMA_20 
+    AND t.EMA_20 > t.EMA_40
+    THEN 1
+
+	WHEN t.EMA_10 < t.EMA_20 
+    AND t.EMA_20 > t.EMA_40
+	AND t.EMA_10 > t.EMA_40
+    THEN 2
+
+	WHEN t.EMA_10 < t.EMA_20 
+    AND t.EMA_20 > t.EMA_40
+	AND t.EMA_10 < t.EMA_40
+    THEN 3
+
+	WHEN t.EMA_10 < t.EMA_20 
+    AND t.EMA_20 < t.EMA_40
+    THEN 4
+
+	WHEN t.EMA_10 > t.EMA_20 
+    AND t.EMA_20 < t.EMA_40
+	AND t.EMA_10 < t.EMA_40
+    THEN 5
+
+	WHEN t.EMA_10 > t.EMA_20 
+    AND t.EMA_20 < t.EMA_40
+	AND t.EMA_10 > t.EMA_40
+    THEN 6
+
+    ELSE 0
+END
+FROM Datos2 t;

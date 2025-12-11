@@ -1,0 +1,36 @@
+use Michi 
+UPDATE t
+SET F6_1 = CASE
+    WHEN t.E1_4 >= 3 
+    THEN -1
+
+	WHEN t.E2_2 < 10 
+    THEN 1
+
+    ELSE 0
+END
+FROM Datos2 t;
+
+------------------------------------
+
+use Michi 
+UPDATE t
+SET F6_2 = CASE
+    WHEN t.E1_4 = 2 AND t.E2_2 > 5 OR t.H1_1 < 0
+    THEN -1
+
+    ELSE 0
+END
+FROM Datos2 t;
+
+----------------------------------
+
+use Michi 
+UPDATE t
+SET F6_3 = CASE
+    WHEN t.E1_4 = 1 AND t.H2_2 < 0 OR t.H1_1 < 0 OR t.H1_1 > 14 OR t.H1_2 < 0 OR t.H1_2 > 14
+    THEN -1
+
+    ELSE 0
+END
+FROM Datos2 t;

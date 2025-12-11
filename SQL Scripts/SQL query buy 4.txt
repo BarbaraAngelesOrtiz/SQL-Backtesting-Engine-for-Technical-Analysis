@@ -1,0 +1,52 @@
+-- Asegúrate primero de que la columna E1 exista en la tabla Dinero
+ALTER TABLE Dinero
+ADD E1 INT;
+
+-- Calcular y actualizar el indicador E1 en la base de datos Dinero
+WITH Calculos AS (
+    SELECT
+        t1.Empresa,
+        t1.Fecha,
+        t1.EMA_5,
+        -- Diferencias entre días consecutivos para EMA_5
+        EMA_5_Hoy_Ayer = t1.EMA_5 - LAG(t1.EMA_5, 1) OVER (PARTITION BY t1.Empresa ORDER BY t1.Fecha),
+        EMA_5_Ayer_Antier = LAG(t1.EMA_5, 1) OVER (PARTITION BY t1.Empresa ORDER BY t1.Fecha) - LAG(t1.EMA_5, 2) OVER (PARTITION BY t1.Empresa ORDER BY t1.Fecha),
+        EMA_5_Antier_Antes = LAG(t1.EMA_5, 2) OVER (PARTITION BY t1.Empresa ORDER BY t1.Fecha) - LAG(t1.EMA_5, 3) OVER (PARTITION BY t1.Empresa ORDER BY t1.Fecha)
+    FROM 
+        Datos.dbo.Dinero t1  -- Referenciando la base de datos Datos
+)
+UPDATE Dinero
+SET E1 = CASE 
+    WHEN EMA_5_Hoy_Ayer > EMA_5_Ayer_Antier
+         AND EMA_5_Ayer_Antier > EMA_5_Antier_Antes 
+    THEN 1
+    ELSE 0
+END
+FROM Calculos
+WHERE Dinero.Empresa = Calculos.Empresa
+  AND Dinero.Fecha = Calculos.Fecha;
+
+-- Asegúrate primero de que la columna R3 exista en la tabla Dinero
+ALTER TABLE Dinero
+ADD R3 INT;
+
+-- Calcular y actualizar el indicador R3 en la base de datos Dinero
+WITH Calculos AS (
+    SELECT
+        t1.Empresa,
+        t1.Fecha,
+        t1.RSI,
+        t1.RSI_SMA
+    FROM 
+        Datos.dbo.Dinero t1  -- Referenciando la base de datos Datos
+)
+UPDATE Dinero
+SET R3 = CASE 
+    WHEN Calculos.RSI > Calculos.RSI_SMA 
+    THEN 1
+    ELSE 0
+END
+FROM Calculos
+WHERE Dinero.Empresa = Calculos.Empresa
+  AND Dinero.Fecha = Calculos.Fecha;
+

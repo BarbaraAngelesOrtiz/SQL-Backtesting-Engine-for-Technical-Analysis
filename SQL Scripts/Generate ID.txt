@@ -1,0 +1,42 @@
+-- Cambia a la base de datos de origen
+USE Michi;  
+
+-- CTE para calcular Hist_3 y sus días anteriores
+WITH CTE_Hist_3 AS (
+    SELECT 
+        Empresa,
+        Fecha,
+        Adj_Close,
+        Hist_3,
+        LAG(Hist_3, 1) OVER (PARTITION BY Empresa ORDER BY Fecha) AS Prev_Hist_1,
+        LAG(Hist_3, 2) OVER (PARTITION BY Empresa ORDER BY Fecha) AS Prev_Hist_2
+    FROM 
+        [Michi].[dbo].[Datos]
+),
+-- CTE para agregar un identificador
+CTE_Con_Id AS (
+    SELECT 
+        ROW_NUMBER() OVER (ORDER BY Fecha) AS id, -- Genera un id secuencial
+        CASE 
+            WHEN Hist_3 > Prev_Hist_1 AND Prev_Hist_1 > Prev_Hist_2 THEN 1  -- Crecimiento en dos días consecutivos
+            ELSE 0  -- No se cumple la condición
+        END AS HM1_2,
+        Fecha,
+        Empresa,
+        Adj_Close
+    FROM 
+        CTE_Hist_3
+    WHERE 
+        Empresa = 'RIO'  -- Filtrando para la empresa deseada
+        AND Hist_3 IS NOT NULL  -- Asegurando que no se incluyan valores nulos
+)
+-- Inserción en la tabla Cash
+INSERT INTO Cash (HM1_2, Fecha, Empresa, Adj_Close, id)
+SELECT 
+    HM1_2,
+    Fecha,
+    Empresa,
+    Adj_Close,
+    id
+FROM 
+    CTE_Con_Id;

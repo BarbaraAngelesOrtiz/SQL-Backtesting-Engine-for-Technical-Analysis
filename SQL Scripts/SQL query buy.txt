@@ -1,0 +1,40 @@
+ALTER TABLE Datos
+ADD compra1 INT DEFAULT 0;
+
+-- Actualizar el valor de compra1
+UPDATE t1
+SET compra1 = CASE
+    WHEN t1.EMA_10 > t1.EMA_20
+        AND t1.EMA_20 > t1.EMA_40
+        AND t1.RSI > 60
+        AND (SELECT EMA_10 FROM Datos t2 WHERE t2.fecha = DATEADD(DAY, -1, t1.fecha) AND t2.empresa = t1.empresa) < 
+            (SELECT EMA_20 FROM Datos t2 WHERE t2.fecha = DATEADD(DAY, -1, t1.fecha) AND t2.empresa = t1.empresa)
+    THEN 1
+    ELSE 0
+END
+FROM Datos t1;
+
+-- Actualizar el valor de compra2
+UPDATE t1
+SET compra2 = CASE
+    WHEN t1.EMA_10 > t1.EMA_20
+        AND t1.EMA_20 > t1.EMA_40
+        AND t1.RSI > 60
+        AND (SELECT EMA_20 FROM Datos t2 WHERE t2.fecha = DATEADD(DAY, -1, t1.fecha) AND t2.empresa = t1.empresa) < 
+            (SELECT EMA_40 FROM Datos t2 WHERE t2.fecha = DATEADD(DAY, -1, t1.fecha) AND t2.empresa = t1.empresa)
+    THEN 1
+    ELSE 0
+END
+FROM Datos t1;
+
+-- Actualizar el valor de compra3
+UPDATE t1
+SET compra3 = CASE
+    WHEN t1.RSI > (SELECT RSI FROM Datos t2 WHERE t2.fecha = DATEADD(DAY, -1, t1.fecha) AND t2.empresa = t1.empresa)
+        AND (SELECT RSI FROM Datos t2 WHERE t2.fecha = DATEADD(DAY, -1, t1.fecha) AND t2.empresa = t1.empresa) < 35
+    THEN 1
+    ELSE 0
+END
+FROM Datos t1;
+
+select * from Datos where Datos.compra1= 1 OR Datos.compra2=1 OR Datos.compra3= 1  ;

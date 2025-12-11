@@ -1,0 +1,30 @@
+use Michi 
+UPDATE t
+SET F1_1 = CASE
+    WHEN t.E1_3 >= 20
+    THEN -1
+
+	WHEN t.E1_1 = 1 OR t.E1_1 = 2
+    THEN 1
+
+	WHEN t.E1_2 = 1 OR t.E1_2 = 2
+    THEN 1
+
+    ELSE 0
+END
+FROM Datos2 t;
+
+------------------------------------
+
+use Michi 
+UPDATE t
+SET F1_2 = CASE
+    WHEN t.E1_3 < 20
+    THEN -1
+
+	WHEN t.E2_4 = 3
+    THEN 1
+
+    ELSE 0
+END
+FROM Datos2 t;

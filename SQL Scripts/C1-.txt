@@ -1,0 +1,8 @@
+USE Michi;
+
+UPDATE D
+SET C1= CASE 
+			   WHEN R21 = 1  THEN 1  -- Condición cumplida
+               ELSE 0  -- No se cumple la condición
+            END 
+FROM Datos2 D

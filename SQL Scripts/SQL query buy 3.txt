@@ -1,0 +1,34 @@
+ALTER TABLE Dinero
+ADD Fecha DATE,
+    Empresa VARCHAR(50),
+    Adj_Close DECIMAL(18, 6);  -- Ajusta la precisión y el tipo de dato según corresponda
+
+-- Insertar los datos de Fecha, Empresa y Adj_Close en la tabla Dinero cuando exista el indicador E1 o R3
+INSERT INTO Dinero (Fecha, Empresa, Adj_Close)
+SELECT 
+    t1.Fecha,
+    t1.Empresa,
+    t1.Adj_Close
+FROM 
+    Datos.dbo.Dinero t1  -- Tomando los datos desde la base de datos Datos
+WHERE 
+    EXISTS (
+        SELECT 1
+        FROM Dinero d
+        WHERE d.Empresa = t1.Empresa
+          AND d.Fecha = t1.Fecha
+          AND (d.E1 = 1 OR d.R3 = 1)  -- Solo insertar si el indicador E1 o R3 es 1
+    );
+
+-- Actualizar los datos de Fecha, Empresa y Adj_Close en la tabla Dinero cuando el indicador E1 o R3 exista
+UPDATE Dinero
+SET 
+    Fecha = t1.Fecha,
+    Empresa = t1.Empresa,
+    Adj_Close = t1.Adj_Close
+FROM 
+    Datos.dbo.Dinero t1  -- Tomando los datos desde la base de datos Datos
+WHERE 
+    Dinero.Empresa = t1.Empresa
+    AND Dinero.Fecha = t1.Fecha
+    AND (Dinero.E1 = 1 OR Dinero.R3 = 1);  -- Actualizar solo si el indicador E1 o R3 es 1

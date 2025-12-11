@@ -1,0 +1,40 @@
+WITH Compras AS (
+    SELECT 
+        Empresa,
+        Fecha AS Fecha_Compra,
+        Adj_Close AS Precio_Compra,
+        ROW_NUMBER() OVER (PARTITION BY Empresa ORDER BY Fecha) AS Compra_ID
+    FROM 
+        [Michi].[dbo].[Datos2]
+    WHERE 
+        compra = 1
+),
+Ventas AS (
+    SELECT 
+        Empresa,
+        Fecha AS Fecha_Venta,
+        Adj_Close AS Precio_Venta,
+        ROW_NUMBER() OVER (PARTITION BY Empresa ORDER BY Fecha) AS Venta_ID,
+        LAG(Fecha) OVER (PARTITION BY Empresa ORDER BY Fecha) AS Fecha_Compra,
+        LAG(Adj_Close) OVER (PARTITION BY Empresa ORDER BY Fecha) AS Precio_Compra
+    FROM 
+        [Michi].[dbo].[Datos2]
+    WHERE 
+        V1 = 1 OR V2 = 1
+)
+SELECT 
+    v.Empresa,
+    v.Fecha_Compra,
+    v.Precio_Compra,
+    v.Fecha_Venta,
+    v.Precio_Venta,
+    CASE 
+        WHEN v.Precio_Venta IS NOT NULL AND v.Precio_Compra IS NOT NULL THEN 
+            ((v.Precio_Venta - v.Precio_Compra) / v.Precio_Compra) * 100
+        ELSE 
+            NULL
+    END AS ROI
+FROM 
+    Ventas v
+ORDER BY 
+    v.Empresa, v.Fecha_Compra, v.Fecha_Venta;
