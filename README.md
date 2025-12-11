@@ -1,4 +1,4 @@
-# 💡Proyecto SQL Financiero: Análisis Técnico y Generación de Señales
+# 💡Proyecto SQL Financiero: Backtesting, Análisis Técnico y Generación de Señales
 
 Este proyecto consiste en la creación de una base de datos, cuyos datos se obtienen de una API. Los scripts SQL, que utilizan principalmente Expresiones Comunes de Tabla (CTE) recursivas y comandos UPDATE en la tabla de datos, están diseñados para realizar análisis técnicos avanzados y generar señales complejas de compra y venta de activos financieros, a menudo filtradas para varias acciones.
 
