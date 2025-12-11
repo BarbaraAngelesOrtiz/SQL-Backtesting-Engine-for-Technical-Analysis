@@ -19,7 +19,7 @@ The initial phase focuses on establishing foundational binary indicators (R, E, 
 ----
 
 ## 📊PHASE 2: Calculation of Sustained Streaks (Recursive CTEs)
-This phase uses Recursive CTEs with high recursion limits (OPTION (MAXRECURSION 10000)),,,,,,, to calculate the duration (streak count) of specific relationships. Positive counts denote bullish streaks (EMA A > EMA B) and negative counts denote bearish streaks (EMA A < EMA B).
+This phase uses Recursive CTEs with high recursion limits (OPTION (MAXRECURSION 10000)) to calculate the duration (streak count) of specific relationships. Positive counts denote bullish streaks (EMA A > EMA B) and negative counts denote bearish streaks (EMA A < EMA B).
 
 | Counter (Column)            | Condition Tracked                                                                                                                          |
 |-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
@@ -39,7 +39,9 @@ This phase uses the sustained streaks calculated above to define market conditio
    
 2. **Compound Signals (F1, F5, F6):** These combine multiple streak counters:
     ◦ F1_1, F1_2: Use thresholds on EMA cross streaks (e.g., E1_3 >= 20 or E1_1 = 1 or 2) to determine the signal.
+   
     ◦ F5_1, F5_2: Define extreme conditions, often triggering a signal (1) when bearish streaks are very long (e.g., E1_3 <= -80 or combinations of negative streaks in E1_4 and E2_4).
+   
     ◦ F6_x: Use combinations of EMA streaks (E1_4, E2_2) and velocity streaks (H2_2).
 
 ----
@@ -60,8 +62,10 @@ Explicit buy and sell signals are defined on the Datos table:
 
 1. **ID Generation and Insertion:** A CTE calculates if Hist_3 showed two consecutive days of growth (HM1_2 = 1). These records, specifically for the company 'RIO', are inserted into the Cash table with a sequential ID. Duplicate entries in the Cash table are then explicitly removed.
 
-2. **Average Purchase Price (PROM):** Window functions are used to calculate the running sum of purchase prices (SUMA) and the running count of purchases (CONT). This accumulation is reset whenever a sale occurs (Venta_Flag based on V1, V2, V3),. The average price (PROM) is calculated as SUMA / CONT.
+2. **Average Purchase Price (PROM):** Window functions are used to calculate the running sum of purchase prices (SUMA) and the running count of purchases (CONT). This accumulation is reset whenever a sale occurs (Venta_Flag based on V1, V2, V3). The average price (PROM) is calculated as SUMA / CONT.
 
 3. **Return on Investment (ROI) and P&L:**
-    ◦ ROI is calculated at the time of a sale (V1 or V2 = 1) by comparing the Precio_Venta (Adj_Close) with the Precio_Compra (the Adj_Close of the preceding purchase, retrieved using LAG),,,.
+   
+    ◦ ROI is calculated at the time of a sale (V1 or V2 = 1) by comparing the Precio_Venta (Adj_Close) with the Precio_Compra (the Adj_Close of the preceding purchase, retrieved using LAG).
+   
     ◦ Profit or Loss (resultado) is determined by checking if the difference (diferencia) between the sale price and the corresponding purchase price is positive ('Ganancia') or zero/negative ('Perdida').
